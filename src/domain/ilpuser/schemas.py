@@ -10,7 +10,7 @@ class GenderEnum(str, Enum):
     other = "other"
 
 class ILPUserBase(BaseModel):
-    user_id: Optional[str] = None
+    id: Optional[str] = None
     is_active: Optional[bool] = True
     username: str
     first_name: str
@@ -40,7 +40,7 @@ class ILPUserBase(BaseModel):
         return value
 
 class ILPUserUpdate(BaseModel):
-    user_id: Optional[str] = None
+    id: Optional[str] = None
     is_active: Optional[bool] = None
     username: Optional[str] = None
     first_name: Optional[str] = None
@@ -68,7 +68,7 @@ class ILPUserUpdate(BaseModel):
         return value
         
 class ILPUserResponse(BaseModel):
-    user_id: Optional[str] = None
+    id: Optional[str] = None
     is_active: Optional[bool] = None
     username: Optional[str] = None
     first_name: Optional[str] = None
@@ -91,6 +91,6 @@ class ILPUserCreate(ILPUserBase):
  pass
 
 class ILPUser(ILPUserBase):
-    user_id: str
+    id: str
     class Config:
         orm_mode = True

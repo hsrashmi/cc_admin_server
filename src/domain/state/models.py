@@ -5,16 +5,12 @@ from datetime import datetime
 from ...database import Base
 
 
-class Organization(Base):
-    __tablename__ = "organizations"
+class State(Base):
+    __tablename__ = "states"
 
-    id = Column(String, primary_key=True)
-    name = Column(String, nullable=False)
+    id = Column(String, primary_key=True)    
     long_name = Column(String)
     description = Column(String)
-    placeholder1 = Column(String)
-    placeholder2 = Column(String)
-    placeholder3 = Column(String)  
     created_at = Column(DateTime(timezone=True),
                         nullable=False,
                         server_default=text('CURRENT_TIMESTAMP'))

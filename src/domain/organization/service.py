@@ -6,7 +6,7 @@ from resources.strings import ORG_DOES_NOT_EXIST_ERROR, ORG_DELETE_SUCCESSFUL, O
 
 
 def get_organization(db: Session, org_id: str):
-    return db.query(models.Organization).filter(models.Organization.organization_id == org_id).first()
+    return db.query(models.Organization).filter(models.Organization.id == org_id).first()
 
 def get_organizations(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Organization).offset(skip).limit(limit).all()
@@ -28,7 +28,7 @@ def create_organization(db: Session, organization: schemas.OrganizationBase):
 
 def update_organization(db: Session, org_id: str, organization: schemas.OrganizationUpdate):
     try:
-        db_organization = db.query(models.Organization).filter(models.Organization.organization_id == org_id).first()
+        db_organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
         if not db_organization:
             raise HTTPException(status_code=404, detail=ORG_DOES_NOT_EXIST_ERROR)        
         for key, value in organization.model_dump(exclude_none=True).items():
@@ -42,7 +42,7 @@ def update_organization(db: Session, org_id: str, organization: schemas.Organiza
 
 def delete_organization(db: Session, org_id: str):
     try:
-        db_organization = db.query(models.Organization).filter(models.Organization.organization_id == org_id).first()
+        db_organization = db.query(models.Organization).filter(models.Organization.id == org_id).first()
         if not db_organization:
             raise HTTPException(status_code=404, detail=ORG_DOES_NOT_EXIST_ERROR)
         db.delete(db_organization)

@@ -7,7 +7,7 @@ from ...database import Base
 class ILPUser(Base):
     __tablename__ = "ilp_users"
 
-    user_id = Column(String, primary_key=True)
+    id = Column(String, primary_key=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
     is_active = Column(Boolean, default=True)

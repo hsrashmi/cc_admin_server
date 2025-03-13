@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
 from fastapi import HTTPException
-from resources.strings import USER_DOES_NOT_EXIST_ERROR, USER_DELETE_SUCCESSFUL, USER_UPDATE_SUCCESSFUL, AUTHENTICATION_FAILED_ERROR
+from resources.strings import ROLE_DOES_NOT_EXIST_ERROR, ROLE_DELETE_SUCCESSFUL, ROLE_UPDATE_SUCCESSFUL, AUTHENTICATION_FAILED_ERROR
 import bcrypt
 import re
 
@@ -18,7 +18,7 @@ def login_user(db: Session, email: str, password: str):
         
 
 def get_user(db: Session, user_id: str):
-    return db.query(models.ILPUser).filter(models.ILPUser.user_id == user_id).first()
+    return db.query(models.ILPUser).filter(models.ILPUser.id == user_id).first()
 
 
 def get_user_by_email(db: Session, email: str):
@@ -45,27 +45,27 @@ def create_user(db: Session, user: schemas.ILPUserBase):
 
 def update_user(db: Session, user_id: str, user: schemas.ILPUserUpdate):
     try:
-        db_user = db.query(models.ILPUser).filter(models.ILPUser.user_id == user_id).first()
+        db_user = db.query(models.ILPUser).filter(models.ILPUser.id == user_id).first()
         if not db_user:
-            raise HTTPException(status_code=404, detail=USER_DOES_NOT_EXIST_ERROR)
+            raise HTTPException(status_code=404, detail=ROLE_DOES_NOT_EXIST_ERROR)
         for key, value in user.model_dump(exclude_none=True).items():
             setattr(db_user, key, value)
         db.commit()
         db.refresh(db_user)
     except Exception as e:
         raise HTTPException(status_code=400, detail=_extract_detail_text(str(e)))
-    return {"message": USER_UPDATE_SUCCESSFUL}
+    return {"message": ROLE_UPDATE_SUCCESSFUL}
     
 def delete_user(db: Session, user_id: str):
     try:
-        db_user = db.query(models.ILPUser).filter(models.ILPUser.user_id == user_id).first()
+        db_user = db.query(models.ILPUser).filter(models.ILPUser.id == user_id).first()
         if not db_user:
-            raise HTTPException(status_code=404, detail=USER_DOES_NOT_EXIST_ERROR)
+            raise HTTPException(status_code=404, detail=ROLE_DOES_NOT_EXIST_ERROR)
         db.delete(db_user)
         db.commit()
     except Exception as e:
         raise HTTPException(status_code=400, detail=_extract_detail_text(str(e)))
-    return {"message": USER_DELETE_SUCCESSFUL}
+    return {"message": ROLE_DELETE_SUCCESSFUL}
 
 
 def _extract_detail_text(error_message: str) -> str:

@@ -5,16 +5,20 @@ from datetime import datetime
 from ...database import Base
 
 
-class Organization(Base):
-    __tablename__ = "organizations"
+class Activity(Base):
+    __tablename__ = "activities"
 
     id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
+    track = Column(String)
     long_name = Column(String)
-    description = Column(String)
-    placeholder1 = Column(String)
-    placeholder2 = Column(String)
-    placeholder3 = Column(String)  
+    additional_data = Column(String)
+    auto_release_month_and_day = Column(String)
+    complete_winthin_days = Column(String)
+    grades = Column(String)  
+    sequence_number = Column(Integer)
+    reward_points = Column(Integer)
+    description = Column(String)  
     created_at = Column(DateTime(timezone=True),
                         nullable=False,
                         server_default=text('CURRENT_TIMESTAMP'))

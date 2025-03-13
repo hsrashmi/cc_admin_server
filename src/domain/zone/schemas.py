@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime
 
-class OrganizationBase(BaseModel):
+class ZoneBase(BaseModel):
     id: Optional[str] = None
     name: str
     long_name: str
@@ -13,7 +13,7 @@ class OrganizationBase(BaseModel):
     created_at: Optional[datetime] = datetime.now()
     created_by: Optional[str] = "root@ilp.com"
 
-class OrganizationUpdate(BaseModel):
+class ZoneUpdate(BaseModel):
     id: Optional[str] = None
     name: Optional[str] = None
     long_name: Optional[str] = None
@@ -24,7 +24,7 @@ class OrganizationUpdate(BaseModel):
     last_updated_at: Optional[datetime] = datetime.now()
     last_updated_by: Optional[str] = None
 
-class OrganizationResponse(BaseModel):
+class ZoneResponse(BaseModel):
     id: Optional[str] = None
     name: str = None
     long_name: str = None
@@ -37,10 +37,10 @@ class OrganizationResponse(BaseModel):
     last_updated_at: Optional[datetime] = None
     last_updated_by: Optional[str] = None
 
-class OrganizationCreate(OrganizationBase):
+class ZoneCreate(ZoneBase):
     pass
 
-class Organization(OrganizationBase):
+class Zone(ZoneBase):
     id: str
 
     class Config:

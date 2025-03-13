@@ -3,10 +3,10 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 class SchoolBase(BaseModel):
-    school_id: Optional[str] = None
+    id: Optional[str] = None
     name: str
     long_name: str
-    dise_code: int = Field(..., ge=10**10, le=10**11 - 1, description="Phone number must be a 10-digit integer")    
+    dise_code: int = Field(..., ge=10**10, le=10**11 - 1, description="Phone number must be a 10-digit integer")
     city: str
     state: str
     pincode: int
@@ -16,7 +16,7 @@ class SchoolBase(BaseModel):
     created_by: Optional[str] = "root@ilp.com"
 
 class SchoolUpdate(BaseModel):
-    school_id: Optional[str] = None
+    id: Optional[str] = None
     name: Optional[str] = None
     long_name: Optional[str] = None
     last_name: Optional[str] = None
@@ -29,10 +29,34 @@ class SchoolUpdate(BaseModel):
     last_updated_at: Optional[datetime] = datetime.now()
     last_updated_by: Optional[str] = None
 
-class ILPUserCreate(SchoolBase):
+class SchoolCreate(SchoolBase):
  pass
 
-class ILPUser(SchoolBase):
+class School(SchoolBase):
+    id: str
+    class Config:
+        orm_mode = True
+
+class ClassBase(BaseModel):
+    id: Optional[str] = None
     school_id: str
+    grade: str
+    section: str
+    created_at: Optional[datetime] = datetime.now()
+    created_by: Optional[str] = "root@ilp.com"
+
+class ClassUpdate(BaseModel):
+    id: Optional[str] = None
+    school_id: Optional[str] = None
+    grade: Optional[str] = None
+    section: Optional[str] = None
+    last_updated_at: Optional[datetime] = datetime.now()
+    last_updated_by: Optional[str] = None
+
+class ClassCreate(ClassBase):
+ pass
+
+class Class(ClassBase):
+    id: str
     class Config:
         orm_mode = True

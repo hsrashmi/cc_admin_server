@@ -5,16 +5,16 @@ from datetime import datetime
 from ...database import Base
 
 
-class Organization(Base):
-    __tablename__ = "organizations"
+class Asset(Base):
+    __tablename__ = "assets"
 
     id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
-    long_name = Column(String)
+    type = Column(String)
     description = Column(String)
-    placeholder1 = Column(String)
-    placeholder2 = Column(String)
-    placeholder3 = Column(String)  
+    url = Column(String)
+    size = Column(Integer)
+    mime_type = Column(String)
     created_at = Column(DateTime(timezone=True),
                         nullable=False,
                         server_default=text('CURRENT_TIMESTAMP'))

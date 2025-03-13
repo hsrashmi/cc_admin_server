@@ -5,7 +5,7 @@ from .converter import ilpuser_converter
 from ..dependencies import get_db
 from ..domain.ilpuser import service, schemas, models
 from .util_functions import UserQueryRequest, LoginQueryRequest, generate_uuid, string_hash, success_message_response, get_order_by_conditions, get_filter_conditions, get_select_fields
-from resources.strings import USER_DOES_NOT_EXIST_ERROR, EMAIL_ALREADY_EXISTS_ERROR, AUTHENTICATION_FAILED_ERROR
+from resources.strings import ROLE_DOES_NOT_EXIST_ERROR, EMAIL_ALREADY_EXISTS_ERROR, AUTHENTICATION_FAILED_ERROR
 
 router = APIRouter(tags=["ilpuser"])
 
@@ -39,7 +39,7 @@ def read_users(page_no: int = 1, page_size: int = 100, db: Session = Depends(get
 def read_user(user_id: str, db: Session = Depends(get_db)):
     db_user = service.get_user(db, user_id=user_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail=USER_DOES_NOT_EXIST_ERROR)
+        raise HTTPException(status_code=404, detail=ROLE_DOES_NOT_EXIST_ERROR)
     return ilpuser_converter.convert(db_user)   
 
 @router.post("/getIlpusersByParams/", response_model=list, response_model_exclude_none=True)
@@ -67,12 +67,12 @@ def read_users(
 def update_user(user_id: str, user: schemas.ILPUserUpdate, db: Session = Depends(get_db)):
     db_user = service.get_user(db, user_id=user_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail=USER_DOES_NOT_EXIST_ERROR)
+        raise HTTPException(status_code=404, detail=ROLE_DOES_NOT_EXIST_ERROR)
     return service.update_user(db=db, user_id=user_id, user=user)
 
 @router.delete("/ilpuser/{user_id}", response_model=success_message_response)
 def delete_user(user_id: str, db: Session = Depends(get_db)):
     db_user = service.get_user(db, user_id=user_id)
     if db_user is None:
-        raise HTTPException(status_code=404, detail=USER_DOES_NOT_EXIST_ERROR)
+        raise HTTPException(status_code=404, detail=ROLE_DOES_NOT_EXIST_ERROR)
     return service.delete_user(db=db, user_id=user_id)
