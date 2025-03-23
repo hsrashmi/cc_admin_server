@@ -1,7 +1,7 @@
 import jwt
 from fastapi import Header, HTTPException
 
-from .database import SessionLocal
+from .database import AsyncSessionLocal
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 
@@ -16,15 +16,10 @@ def decode(token):
 def encode():
     return jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
 
-
-def get_db():
-    ''' Method for configure database '''
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
+async def get_db_session():
+    async with AsyncSessionLocal() as session:
+        yield session
+        await session.close() 
 
 async def get_token_header(x_token: str = Header(...)):
     ''' Exemplo of header validation dependency '''

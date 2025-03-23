@@ -11,7 +11,7 @@ class AssetBase(BaseModel):
     size: Optional[int] = None
     mime_type: str = None
     created_at: Optional[datetime] = datetime.now()
-    created_by: Optional[str] = "root@ilp.com"
+    created_by: Optional[str] = "54be662c-eab6-4e60-8c43-40cd744d1fbd"
 
 class AssetUpdate(BaseModel):
     id: Optional[str] = None

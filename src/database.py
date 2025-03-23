@@ -1,20 +1,27 @@
 import os
-
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from starlette.config import Config
 
 config = Config(".env")  # Automatically loads variables from .env file
-###
-# Database Configuration
-###
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:careercompass@172.28.208.1:5432/ilp"
+SQLALCHEMY_DATABASE_URL = "postgresql+asyncpg://postgres:careercompass@172.28.208.1:5432/careercompass"
 
-engine = create_engine(
-    config("DB_URL", default=SQLALCHEMY_DATABASE_URL)
+engine = create_async_engine(
+    url=config("DB_URL", default=SQLALCHEMY_DATABASE_URL),    
+    echo=True,
+    pool_size=10,  # Max persistent connections
+    max_overflow=5,  # Additional temporary connections if needed
+    pool_timeout=30  # Max wait time for a connection
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+# Create async session factory
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    expire_on_commit=False,
+    class_=AsyncSession
+)
+
+# Define Base for ORM models
+class Base(DeclarativeBase):
+    pass

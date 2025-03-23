@@ -7,7 +7,7 @@ class StateBase(BaseModel):
     name: str
     description: str
     created_at: Optional[datetime] = datetime.now()
-    created_by: Optional[str] = "root@ilp.com"
+    created_by: Optional[str] = "54be662c-eab6-4e60-8c43-40cd744d1fbd"
 
 class StateUpdate(BaseModel):
     id: Optional[str] = None
@@ -18,8 +18,8 @@ class StateUpdate(BaseModel):
 
 class StateResponse(BaseModel):
     id: Optional[str] = None
-    name: str = None
-    description: str = None
+    name: Optional[str] = None
+    description: Optional[str] = None
     created_at: Optional[datetime] = None
     created_by: Optional[str] = None
     last_updated_at: Optional[datetime] = None

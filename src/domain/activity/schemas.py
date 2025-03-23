@@ -16,7 +16,7 @@ class ActivityBase(BaseModel):
     sequence_number = Optional[str] = None
     reward_points = int    
     created_at: Optional[datetime] = datetime.now()
-    created_by: Optional[str] = "root@ilp.com"
+    created_by: Optional[str] = "54be662c-eab6-4e60-8c43-40cd744d1fbd"
 
 class ActivityUpdate(BaseModel):
     id: Optional[str] = None

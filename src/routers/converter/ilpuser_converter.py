@@ -6,7 +6,7 @@ from ...domain.ilpuser import schemas, models
 def convert(db_ilpuser: models.ILPUser):
     ''' Customized convertion to response template '''
     return schemas.ILPUserResponse(
-        user_id=db_ilpuser.user_id,
+        user_id=db_ilpuser.id,
         is_active=db_ilpuser.is_active, 
         username=db_ilpuser.username,
         email=db_ilpuser.email,

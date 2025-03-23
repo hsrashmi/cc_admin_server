@@ -6,7 +6,7 @@ from ...domain.organization import schemas, models
 def convert(db_organization: models.Organization):
     ''' Customized convertion to response template '''
     return schemas.OrganizationResponse(
-        organization_id=db_organization.organization_id,
+        id=db_organization.id,
         name=db_organization.name,
         long_name=db_organization.long_name,
         description=db_organization.description,

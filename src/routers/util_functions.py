@@ -25,8 +25,8 @@ def get_filter_conditions(filters: dict, table_fields: list) -> list:
             "<=": operator.le, 
             "==": operator.eq, 
             "!=": operator.ne,
-            "like": lambda col, val: col.like(val),
-            "ilike": lambda col, val: col.ilike(val),
+            "like": lambda col, val: col.like("%"+val+"%"),
+            "ilike": lambda col, val: col.ilike("%"+val+"%"),
             "in": lambda col, val: col.in_(val if isinstance(val, list) else val.split(",")),
             "not in": lambda col, val: ~col.in_(val if isinstance(val, list) else val.split(",")),
             "isnull": lambda col, _: col.is_(None),
@@ -62,10 +62,16 @@ def get_limit_offset(limit: int, offset: int) -> tuple[int]:
 
 def get_select_fields(fields: list, table_fields: list) -> list:
     selected_fields = []
+    print("------------------------")
+    print(table_fields)
     if not fields:
         selected_fields = list(table_fields)
     else:
         selected_fields = [field for field in fields if field in table_fields]
+
+    print("------------------------")
+    print(table_fields)
+
     return selected_fields
 
 def get_pagination_params(page_size: int, page_number: int) -> tuple[int]:
@@ -85,8 +91,8 @@ class error_message_response(BaseModel):
 class UserQueryRequest(BaseModel):
     fields: Optional[List[str]] = None
     filters: Optional[Dict[str, Any]] = None
-    page_no: int = Field(1, ge=1)          # Page must be ≥ 1
-    page_size: int = Field(10, ge=1, le=100)  # Page size between 1 and 100
+    page_no: Optional[int] = Field(1, ge=1)  # Optional with default value
+    page_size: Optional[int] = Field(100, ge=1, le=100)  # Optional with default value
     order_by: Optional[List[str]] = None
 
 

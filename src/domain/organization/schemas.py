@@ -11,7 +11,7 @@ class OrganizationBase(BaseModel):
     placeholder2: Optional[str] = None
     placeholder3: Optional[str] = None
     created_at: Optional[datetime] = datetime.now()
-    created_by: Optional[str] = "root@ilp.com"
+    created_by: Optional[str] = "54be662c-eab6-4e60-8c43-40cd744d1fbd"
 
 class OrganizationUpdate(BaseModel):
     id: Optional[str] = None
