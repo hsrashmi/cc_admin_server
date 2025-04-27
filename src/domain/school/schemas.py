@@ -60,6 +60,7 @@ class SchoolDetailsResponse(BaseModel):
     district_name: Optional[str] = None
     zone_id: Optional[str] = None
     zone_name: Optional[str]  = None
+    state_id: Optional[str] = None
     state_name: Optional[str] = None
 
     # All fields from School table (example)
@@ -100,6 +101,16 @@ class ClassResponse(BaseModel):
     section: Optional[str] = None
     last_updated_at: Optional[datetime] = None
     last_updated_by: Optional[str] = None
+class ClassDetailsBase(BaseModel):
+    class_id: Optional[str] = None    
+    grade: Optional[str] = None
+    section: Optional[str] = None
+    class_teacher_id: Optional[str] = None
+    class_teacher_name: Optional[str] = None
+    teacher_assignment_id: Optional[str] = None
+    student_count: Optional[int] = 0
+    created_at: Optional[datetime] = datetime.now()
+    created_by: Optional[str] = "54be662c-eab6-4e60-8c43-40cd744d1fbd"
 
 class ClassCreate(ClassBase):
  pass

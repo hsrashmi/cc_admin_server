@@ -47,7 +47,7 @@ async def read_users(
 
     # Calculate Limit and Offset based on Page Number
     limit = request.page_size
-    skip = (request.page - 1) * request.page_size  # Offset calculation
+    skip = (request.page_no - 1) * request.page_size  # Offset calculation
 
     db_users = await service.get_organizations_by_params(db, selected_fields, filter_cond, ordering, skip=skip, limit=limit)
     return [dict(zip(selected_fields, user)) for user in db_users]

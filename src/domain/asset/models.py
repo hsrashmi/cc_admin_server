@@ -6,9 +6,9 @@ from ...database import Base
 
 # Define Enum for asset type
 class AssetType(str, Enum):
-    PHOTO = "photo"
-    VIDEO = "video"
-    DOCUMENT = "document"
+    PHOTO = "PHOTO"
+    VIDEO = "VIDEO"
+    DOCUMENT = "DOCUMENT"
 
 class Asset(Base):
     __tablename__ = "assets"

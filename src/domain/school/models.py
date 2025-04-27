@@ -1,10 +1,12 @@
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, text, BigInteger
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, aliased
 from datetime import datetime
 from ...database import Base
+from ..ilpuser.models import ILPUser
 from ..block.models import Block
 from ..district.models import District
 from ..zone.models import Zone
+from ..state.models import State
 
 class School(Base):
     __tablename__ = "schools"
@@ -44,17 +46,25 @@ class School(Base):
         """
         model_fields = cls.get_valid_fields()
 
+        # Aliased models for relationships
+        Block_alias = aliased(Block)
+        District_alias = aliased(District)
+        Zone_alias = aliased(Zone)
+        State_alias = aliased(State)
+        Creator = aliased(ILPUser)
+        Updater = aliased(ILPUser)
+
         # Additional computed fields (from relationships)
         relation_mapping = {
-            "block_name": "block",
-            "district_name": "block.district",
-            "district_id": "block.district",
-            "zone_id": "block.district.zone",
-            "zone_name": "block.district.zone",
-            "state_id": "block.district.zone.state",
-            "state_name": "block.district.zone.state",
-            "created_by": "creator.email",
-            "updated_by": "updater.email",
+            "block_name": Block_alias.name,
+            "district_name": District_alias.name,
+            "district_id": District_alias.id,
+            "zone_id": Zone_alias.id,
+            "zone_name": Zone_alias.name,
+            "state_id": State_alias.id,
+            "state_name": State_alias.name,
+            "created_by": Creator.email,
+            "updated_by": Updater.email,
         }
 
         model_fields.update(relation_mapping)

@@ -16,7 +16,7 @@ async def get_block(db: AsyncSession, block_id: str):
 
 async def get_block_by_name(db: AsyncSession, name: str):
     result = await db.execute(
-        select(models.Zone).filter(func.lower(models.Zone.name) == name.lower())
+        select(models.Block).filter(func.lower(models.Block.name) == name.lower())
     )    
     return result.scalar()
 

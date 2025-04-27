@@ -21,16 +21,16 @@ async def read_schools(skip: int = 0, limit: int = 100, db: Session = Depends(ge
     schools = await service.get_schools(db, skip=skip, limit=limit)
     return schools
 
-@router.get("/school/{School_id}", response_model=schemas.SchoolResponse)
-async def read_School(School_id: str, db: Session = Depends(get_db_session)):
-    db_school = await service.get_School(db, school_id=School_id)
+@router.get("/school/{school_id}", response_model=schemas.SchoolResponse)
+async def read_School(school_id: str, db: Session = Depends(get_db_session)):
+    db_school = await service.get_School(db, school_id=school_id)
     if db_school is None:
         raise HTTPException(status_code=404, detail=SCHOOL_DOES_NOT_EXIST_ERROR)
     return db_school
 
-@router.get("/schoolDetails/{School_id}", response_model=schemas.SchoolDetailsResponse)
-async def read_School_details(School_id: str, db: Session = Depends(get_db_session)):
-    db_school = await service.get_school_details(db, school_id=School_id)
+@router.get("/schoolDetails/{school_id}", response_model=schemas.SchoolDetailsResponse)
+async def read_School_details(school_id: str, db: Session = Depends(get_db_session)):
+    db_school = await service.get_school_details(db, school_id=school_id)
     if db_school is None:
         raise HTTPException(status_code=404, detail=SCHOOL_DOES_NOT_EXIST_ERROR)
     return db_school
@@ -43,8 +43,9 @@ async def read_schools_details(
     table_fields = models.School.get_school_details_fields()  
     
     selected_fields = get_select_fields(request.fields, table_fields)
-
-    filter_cond = get_filter_conditions(request.filters, table_fields)
+    
+    # filter_cond = get_filter_conditions(request.filters, table_fields)
+    filter_cond = request.filters
 
     ordering = get_order_by_conditions(request.order_by, table_fields)
 
@@ -56,8 +57,8 @@ async def read_schools_details(
     return db_schools
     # return [dict(zip(selected_fields, school)) for school in db_schools]
 
-@router.post("/getschoolsByParams/", response_model=list, response_model_exclude_none=True)
-async def read_users(
+@router.post("/getSchoolsByParams/", response_model=list, response_model_exclude_none=True)
+async def read_schools_by_params(
         request: UserQueryRequest, 
         db: Session = Depends(get_db_session)):
     
@@ -72,21 +73,21 @@ async def read_users(
 
     # Calculate Limit and Offset based on Page Number
     limit = request.page_size
-    skip = (request.page - 1) * request.page_size  # Offset calculation
+    skip = (request.page_no - 1) * request.page_size  # Offset calculation
 
     db_schools = await service.get_schools_by_params(db, selected_fields, filter_cond, ordering, skip=skip, limit=limit)
-    return [dict(zip(selected_fields, user)) for user in db_schools]
+    return [dict(zip(selected_fields, school)) for school in db_schools]
 
-@router.put("/school/{School_id}", response_model=success_message_response)
-async def update_School(School_id: str, school: schemas.SchoolUpdate, db: Session = Depends(get_db_session)):
-    db_school = await service.get_School(db, school_id=School_id)
+@router.put("/school/{school_id}", response_model=success_message_response)
+async def update_School(school_id: str, school: schemas.SchoolUpdate, db: Session = Depends(get_db_session)):
+    db_school = await service.get_school(db, school_id=school_id)
     if db_school is None:
         raise HTTPException(status_code=404, detail=SCHOOL_DOES_NOT_EXIST_ERROR)
-    return await service.update_School(db=db, school_id=School_id, school=school)
+    return await service.update_school(db=db, school_id=school_id, school=school)
 
-@router.delete("/school/{School_id}", response_model=success_message_response)
-async def delete_School(School_id: str, db: Session = Depends(get_db_session)):
-    db_school = await service.get_School(db, school_id=School_id)
+@router.delete("/school/{school_id}", response_model=success_message_response)
+async def delete_School(school_id: str, db: Session = Depends(get_db_session)):
+    db_school = await service.get_school(db, school_id=school_id)
     if db_school is None:
         raise HTTPException(status_code=404, detail=SCHOOL_DOES_NOT_EXIST_ERROR)
-    return await service.delete_School(db=db, school_id=School_id)
+    return await service.delete_school(db=db, school_id=school_id)

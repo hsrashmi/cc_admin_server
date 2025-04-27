@@ -62,15 +62,10 @@ def get_limit_offset(limit: int, offset: int) -> tuple[int]:
 
 def get_select_fields(fields: list, table_fields: list) -> list:
     selected_fields = []
-    print("------------------------")
-    print(table_fields)
     if not fields:
         selected_fields = list(table_fields)
     else:
         selected_fields = [field for field in fields if field in table_fields]
-
-    print("------------------------")
-    print(table_fields)
 
     return selected_fields
 

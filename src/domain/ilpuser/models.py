@@ -5,9 +5,9 @@ from ...database import Base
 from enum import Enum
 
 class GenderEnum(str, Enum):
-    male = "male"
-    female = "female"
-    other = "other"
+    MALE = "MALE"
+    FEMALE = "FEMALE"
+    OTHER = "OTHER"
 
 class ILPUser(Base):
     __tablename__ = "ilp_users"

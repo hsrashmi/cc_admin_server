@@ -10,13 +10,13 @@ from resources.strings import (
 )
 
 
-async def get_district(db: AsyncSession, dist_id: str):
-    result = await db.execute(select(models.District).filter(models.District.id == dist_id))
+async def get_district(db: AsyncSession, district_id: str):
+    result = await db.execute(select(models.District).filter(models.District.id == district_id))
     return result.scalar()
 
 async def get_district_by_name(db: AsyncSession, name: str):
     result = await db.execute(
-        select(models.Zone).filter(func.lower(models.Zone.name) == name.lower())
+        select(models.District).filter(func.lower(models.District.name) == name.lower())
     )    
     return result.scalar()
 
@@ -45,9 +45,9 @@ async def create_district(db: AsyncSession, district: schemas.DistrictBase):
     return db_district
 
 
-async def update_district(db: AsyncSession, dist_id: str, district: schemas.DistrictUpdate):
+async def update_district(db: AsyncSession, district_id: str, district: schemas.DistrictUpdate):
     try:
-        result = await db.execute(select(models.District).filter(models.District.id == dist_id))
+        result = await db.execute(select(models.District).filter(models.District.id == district_id))
         db_district = result.scalar()
 
         if not db_district:
@@ -64,9 +64,9 @@ async def update_district(db: AsyncSession, dist_id: str, district: schemas.Dist
     return {"message": DISTRICT_UPDATE_SUCCESSFUL}
 
 
-async def delete_district(db: AsyncSession, dist_id: str):
+async def delete_district(db: AsyncSession, district_id: str):
     try:
-        result = await db.execute(select(models.District).filter(models.District.id == dist_id))
+        result = await db.execute(select(models.District).filter(models.District.id == district_id))
         db_district = result.scalar()
 
         if not db_district:

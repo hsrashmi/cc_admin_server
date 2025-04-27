@@ -19,6 +19,7 @@ ZONE_DOES_NOT_EXIST_ERROR = "Zone does not exist"
 DISTRICT_DOES_NOT_EXIST_ERROR = "District does not exist"
 STATE_DOES_NOT_EXIST_ERROR = "State does not exist"
 USER_ROLE_ASSOCIATION_DOES_NOT_EXIST_ERROR = "User Role association does not exist"
+PROFILE_PIC_DOESNT_EXIST = "Profile picture doesnt exist"
 
 # Errors already exists
 EMAIL_ALREADY_EXISTS_ERROR = "User with this email id is already registered"
