@@ -45,3 +45,37 @@ class Asset(AssetBase):
 
     class Config:
         orm_mode = True
+
+class ActivityAssetBase(BaseModel):
+    id: Optional[str] = None
+    activity_id: str = None
+    asset_id: str = None
+    created_at: Optional[datetime] = datetime.now()
+    created_by: Optional[str] = "54be662c-eab6-4e60-8c43-40cd744d1fbd"
+
+class AssetUpdate(BaseModel):
+    id: Optional[str] = None
+    activity_id: Optional[str] = None
+    asset_id: Optional[str] = None
+    last_updated_at: Optional[datetime] = datetime.now()
+    last_updated_by: Optional[str] = None
+
+class ActivityAssetResponse(BaseModel):
+    id: Optional[str] = None
+    activity_id: Optional[str] = None
+    activity_name: Optional[str] = None 
+    asset_id: Optional[str] = None
+    asset_description: Optional[str] = None 
+    created_at: Optional[datetime] = None
+    created_by: Optional[str] = None
+    last_updated_at: Optional[datetime] = None
+    last_updated_by: Optional[str] = None
+
+class ActivityAssetBaseCreate(ActivityAssetBase):
+    pass
+
+class ActivityAsset(AssetBase):
+    id: str
+
+    class Config:
+        orm_mode = True

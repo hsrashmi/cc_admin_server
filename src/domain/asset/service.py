@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 import re
 from . import models, schemas
+from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException
 from resources.strings import (
     ASSET_CREATE_SUCCESSFUL, ASSET_DELETE_SUCCESSFUL, 
@@ -38,7 +39,19 @@ async def create_asset(db: AsyncSession, asset: schemas.AssetBase):
         raise HTTPException(status_code=400, detail=_extract_detail_text(str(e)))
     return db_asset
 
-
+async def link_assets_to_activity(db: AsyncSession, activityAssetsAssociation: list[schemas.ActivityAssetBase]):
+    try:
+        db_assets = [models.ActivityAsset(**asset.model_dump()) for asset in activityAssetsAssociation]
+        db.add_all(db_assets)
+        await db.commit()
+        for asset in db_assets:
+            await db.refresh(asset)
+        return db_assets
+    except Exception as e:
+        print(str(e))
+        await db.rollback()
+        raise HTTPException(status_code=400, detail=_extract_detail_text(str(e)))
+    
 async def update_asset(db: AsyncSession, asset_id: str, asset: schemas.AssetUpdate):
     try:
         result = await db.execute(select(models.Asset).filter(models.Asset.id == asset_id))
@@ -69,9 +82,29 @@ async def delete_asset(db: AsyncSession, asset_id: str):
         await db.delete(db_asset)
         await db.commit()
     except Exception as e:
+        print("error is ------------ ", str(e))
         raise HTTPException(status_code=400, detail=_extract_detail_text(str(e)))
     return {"message": ASSET_DELETE_SUCCESSFUL}
 
+
+async def delete_asset_activity_association(db: AsyncSession, asset_id: str):
+    try:
+        result = await db.execute(select(models.ActivityAsset).filter(models.ActivityAsset.asset_id == asset_id))
+        db_asset = result.scalar()
+
+        if not db_asset:
+            raise HTTPException(status_code=404, detail=ASSET_DOES_NOT_EXIST_ERROR)
+
+        await db.delete(db_asset)
+        await db.commit()
+    except Exception as e:
+        print("error is 1------------ ", str(e))
+        raise HTTPException(status_code=400, detail=_extract_detail_text(str(e)))
+    return {"message": ASSET_DELETE_SUCCESSFUL}
+
+async def get_assets_by_activity(db: AsyncSession, activity_id: str):
+    result = await db.execute(select(models.Asset).filter(models.Asset.activity_id == activity_id))
+    return result.scalars().all()
 
 def _extract_detail_text(error_message: str) -> str:
     match = re.search(r"DETAIL:\s+(.*)", error_message)
